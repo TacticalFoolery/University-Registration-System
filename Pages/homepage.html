@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Home - University System</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+    display: flex;
+    flex-direction: column;
+}
+
+/* TOP BAR */
+.nav {
+    background: #205081;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.nav-left img {
+    height: 40px;
+}
+
+.nav-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.nav-right img {
+    height: 35px;
+}
+
+/* MAIN */
+.main {
+    flex: 1;
+    padding: 30px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+/* CARDS */
+.card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0px 8px 25px rgba(0,0,0,0.15);
+    border-top: 5px solid #205081;
+}
+
+.card h2 {
+    margin-bottom: 15px;
+    font-size: 18px;
+    text-align: center;
+}
+
+/* LINKS */
+.link {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+}
+
+.link:hover {
+    background: #f0f4ff;
+}
+
+/* ADVISOR */
+.advisor {
+    margin: 0 30px 20px 30px;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 6px 20px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.advisor a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 12px 18px;
+    background: #205081;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+}
+
+/* FOOTER */
+.footer {
+    background: #1a1a1a;
+    color: white;
+    text-align: center;
+    padding: 12px;
+    font-size: 14px;
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- TOP BAR -->
+<div class="nav">
+    <div class="nav-left">
+        <img src="../Images/logo.png">
+        <div class="nav-title">University Registration System</div>
+    </div>
+
+    <div class="nav-right">
+        <img src="../Images/account.png">
+    </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+    <!-- STUDENT RECORDS -->
+    <div class="card">
+        <h2>STUDENT RECORDS</h2>
+        <div class="link">View My Student Profile <span>›</span></div>
+        <div class="link">View & Update My Information <span>›</span></div>
+        <div class="link">View My Grades <span>›</span></div>
+        <div class="link">View Transcript <span>›</span></div>
+        <div class="link">Track Transcript Request <span>›</span></div>
+    </div>
+
+    <!-- REGISTRATION -->
+    <div class="card">
+        <h2>REGISTRATION</h2>
+        <div class="link">Plan & Register for Classes <span>›</span></div>
+        <div class="link">View My Class Schedule <span>›</span></div>
+        <div class="link">Change / Drop Classes <span>›</span></div>
+        <div class="link">Search Classes <span>›</span></div>
+        <div class="link">Course Materials / Bookstore <span>›</span></div>
+    </div>
+
+    <!-- FINANCIAL -->
+    <div class="card">
+        <h2>STUDENT FINANCIALS</h2>
+        <div class="link">Bill & Payment Center <span>›</span></div>
+        <div class="link">Financial Aid Overview <span>›</span></div>
+        <div class="link">View Account Balance <span>›</span></div>
+        <div class="link">Payment History <span>›</span></div>
+    </div>
+
+</div>
+
+<!-- ADVISOR -->
+<div class="advisor">
+    <h3>Need Help?</h3>
+    <p>Schedule a meeting with an Academic Advisor</p>
+    <a href="#">Schedule Advisor Meeting</a>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+    Support: (555) 123-4567 | support@university.edu <br>
+    © 2026 University Registration System | FGCU
+</div>
+
+</body>
+</html>

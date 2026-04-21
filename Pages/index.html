@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>University System</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* TOP BAR */
+.nav {
+    background: #205081;
+    color: white;
+    padding: 15px 30px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* MAIN BACKGROUND */
+.main {
+    flex: 1;
+    background: url("../Images/fgcusign.png") no-repeat center center/cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* LOGIN CARD */
+.login-card {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 40px;
+    border-radius: 12px;
+    width: 350px;
+    text-align: center;
+    box-shadow: 0px 8px 25px rgba(0,0,0,0.2);
+}
+
+.login-card h2 {
+    margin-bottom: 25px;
+}
+
+.login-card input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.login-card button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    background: #205081;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.login-card button:hover {
+    background: #163a63;
+}
+
+/* FOOTER */
+.footer {
+    background: #1a1a1a;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-size: 14px;
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- TOP BAR -->
+<div class="nav">
+    University Registration System
+</div>
+
+<!-- MAIN -->
+<div class="main">
+    <div class="login-card">
+        <h2>Login</h2>
+        <input type="text" placeholder="Username">
+        <input type="password" placeholder="Password">
+        <button onclick="goToDashboard()">Login</button>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+    Support: (555) 123-4567 | support@university.edu <br>
+    © 2026 University Registration System | FGCU
+</div>
+
+<script>
+function goToDashboard() {
+    alert("Pretend this logs you in → next page");
+}
+</script>
+
+</body>
+</html>

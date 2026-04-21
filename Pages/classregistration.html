@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Plan & Register</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: #f4f6f9;
+}
+
+/* TOP */
+.nav {
+    background: #205081;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+}
+.nav img { height: 35px; }
+
+.term-bar {
+    background: white;
+    padding: 10px 20px;
+}
+
+/* MAIN */
+.main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1.8fr 1.2fr; /* LEFT BIGGER */
+}
+
+/* LEFT */
+.left {
+    background: white;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+    overflow-y: auto;
+}
+
+/* TABS */
+.tabs {
+    display: flex;
+    margin-bottom: 10px;
+}
+.tab {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    background: #ddd;
+}
+.tab.active {
+    background: #205081;
+    color: white;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 6px;
+    border: 1px solid #ddd;
+    font-size: 12px;
+}
+th {
+    background: #205081;
+    color: white;
+}
+
+/* RIGHT CALENDAR */
+.calendar {
+    padding: 10px;
+    background: #d4f4dd;
+}
+
+.month {
+    background: white;
+    padding: 8px;
+    border-radius: 10px;
+}
+
+.day {
+    width: 13%;
+    height: 60px;
+    display: inline-block;
+    border: 1px solid #eee;
+    font-size: 10px;
+}
+
+.tag {
+    margin-top: 2px;
+    padding: 2px;
+    border-radius: 4px;
+    font-size: 9px;
+    cursor: pointer;
+    color: white;
+}
+
+/* WEEKLY HEADER */
+.weekly-title {
+    padding: 5px 15px;
+    font-weight: bold;
+}
+
+/* WEEKLY */
+.weekly {
+    height: 30%;
+    background: #d6e4ff;
+    display: flex;
+    flex-direction: column;
+}
+
+.schedule-container {
+    display: flex;
+    overflow-y: scroll;
+    height: 100%;
+}
+
+/* TIMES */
+.times {
+    width: 55px;
+    border-right: 1px solid #aaa;
+}
+.time-slot {
+    height: 50px;
+    border-bottom: 1px solid #eee;
+    font-size: 10px;
+}
+
+/* GRID */
+.week-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    position: relative;
+}
+
+.day-header {
+    text-align: center;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.day-col {
+    border-right: 1px solid #ddd;
+    position: relative;
+}
+
+/* CLASS BLOCK */
+.class-block {
+    position: absolute;
+    left: 3px;
+    right: 3px;
+    border-radius: 5px;
+    padding: 3px;
+    font-size: 10px;
+    color: white;
+    cursor: pointer;
+}
+
+/* MODAL */
+.modal {
+    position: fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background: rgba(0,0,0,0.6);
+    display:none;
+    justify-content:center;
+    align-items:center;
+}
+
+.modal-content {
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    width:300px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="nav">
+    <img src="../Images/logo.png">
+    <img src="../Images/account.png">
+</div>
+
+<div class="term-bar">
+    <b>Select Term:</b>
+    <select><option>Fall 2026</option></select>
+</div>
+
+<div class="main">
+
+<!-- LEFT -->
+<div class="left">
+    <h3>B.S. Computer Science</h3>
+
+    <div class="tabs">
+        <div class="tab active" onclick="switchTab('recommended', this)">Recommended</div>
+        <div class="tab" onclick="switchTab('current', this)">Current Classes</div>
+    </div>
+
+    <!-- RECOMMENDED FIRST -->
+    <div id="recommended">
+
+        <h4>Required Classes</h4>
+        <ul>
+            <li>CS201 - Data Structures</li>
+            <li>CS301 - Algorithms</li>
+        </ul>
+
+        <h4>Prerequisites</h4>
+        <ul>
+            <li>MATH101 - College Algebra</li>
+        </ul>
+
+        <h4>Electives</h4>
+        <ul>
+            <li>CYB210 - Intro to Cybersecurity</li>
+        </ul>
+
+        <h4>Recommended (Next Term)</h4>
+        <table>
+            <tr><th>Class</th><th>CRN</th><th>Status</th></tr>
+            <tr><td>CS201</td><td>22222</td><td>Open</td></tr>
+            <tr><td>CS301</td><td>33333</td><td>Open</td></tr>
+            <tr><td>CYB210</td><td>44444</td><td>Open</td></tr>
+        </table>
+    </div>
+
+    <!-- CURRENT -->
+    <div id="current" style="display:none;">
+        <table>
+            <tr><th>Class</th><th>CRN</th></tr>
+            <tr><td>CS101</td><td>12345</td></tr>
+            <tr><td>MATH202</td><td>67890</td></tr>
+        </table>
+
+        <input placeholder="Enter CRN">
+        <button>Submit</button>
+    </div>
+</div>
+
+<!-- RIGHT -->
+<div class="calendar">
+    <b>Calendar</b>
+    <div class="month" id="month"></div>
+</div>
+
+</div>
+
+<!-- WEEKLY -->
+<div class="weekly">
+    <div class="weekly-title">Weekly Schedule</div>
+
+    <div style="display:grid;grid-template-columns:55px repeat(5,1fr);font-size:11px;">
+        <div></div>
+        <div class="day-header">Mon</div>
+        <div class="day-header">Tue</div>
+        <div class="day-header">Wed</div>
+        <div class="day-header">Thu</div>
+        <div class="day-header">Fri</div>
+    </div>
+
+    <div class="schedule-container">
+
+        <div class="times" id="times"></div>
+
+        <div class="week-grid">
+            <div class="day-col" id="mon"></div>
+            <div class="day-col" id="tue"></div>
+            <div class="day-col" id="wed"></div>
+            <div class="day-col" id="thu"></div>
+            <div class="day-col" id="fri"></div>
+        </div>
+
+    </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+    <div class="modal-content" id="modalContent"></div>
+</div>
+
+<script>
+// tabs
+function switchTab(tab, el){
+    document.getElementById("current").style.display = tab==="current"?"block":"none";
+    document.getElementById("recommended").style.display = tab==="recommended"?"block":"none";
+    document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+    el.classList.add("active");
+}
+
+// month
+const month=document.getElementById("month");
+for(let i=1;i<=30;i++){
+    let d=document.createElement("div");
+    d.className="day";
+    d.innerHTML="<b>"+i+"</b>";
+    month.appendChild(d);
+}
+
+// times
+const times=document.getElementById("times");
+for(let h=8;h<=20;h++){
+    let t=document.createElement("div");
+    t.className="time-slot";
+    t.innerText=h+":00";
+    times.appendChild(t);
+}
+
+// classes
+const classes=[
+    {name:"CS101", days:["mon","wed","fri"], start:10.5, end:12, color:"#ff6b6b", desc:"Intro to CS"},
+    {name:"MATH202", days:["tue","thu"], start:15, end:16.25, color:"#4dabf7", desc:"Calculus II"}
+];
+
+const HOUR_HEIGHT=50;
+const START=8;
+
+// weekly render
+classes.forEach(c=>{
+    c.days.forEach(d=>{
+        let col=document.getElementById(d);
+        let block=document.createElement("div");
+
+        block.className="class-block";
+        block.style.background=c.color;
+
+        block.style.top=(c.start-START)*HOUR_HEIGHT+"px";
+        block.style.height=(c.end-c.start)*HOUR_HEIGHT+"px";
+
+        block.innerText=c.name;
+        block.onclick=()=>openModal(c);
+
+        col.appendChild(block);
+    });
+});
+
+// month render
+let days=document.querySelectorAll(".day");
+classes.forEach(c=>{
+    days.forEach((d,i)=>{
+        if(i%7===1 && c.days.includes("tue") ||
+           i%7===2 && c.days.includes("wed") ||
+           i%7===3 && c.days.includes("thu") ||
+           i%7===4 && c.days.includes("fri") ||
+           i%7===0 && c.days.includes("mon")){
+            
+            let tag=document.createElement("div");
+            tag.className="tag";
+            tag.style.background=c.color;
+            tag.innerText=c.name;
+            tag.onclick=()=>openModal(c);
+            d.appendChild(tag);
+        }
+    });
+});
+
+// modal
+function openModal(c){
+    document.getElementById("modal").style.display="flex";
+    document.getElementById("modalContent").innerHTML=`
+        <h3>${c.name}</h3>
+        <p><b>Time:</b> ${c.start} - ${c.end}</p>
+        <p>${c.desc}</p>
+        <p>CRN: 12345</p>
+        <button onclick="closeModal()">Close</button>
+    `;
+}
+function closeModal(){
+    document.getElementById("modal").style.display="none";
+}
+</script>
+
+</body>
+</html>
