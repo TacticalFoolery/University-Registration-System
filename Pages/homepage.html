@@ -5,9 +5,7 @@
 <title>Home - University System</title>
 
 <style>
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 html, body {
     margin: 0;
@@ -34,18 +32,14 @@ html, body {
     gap: 15px;
 }
 
-.nav-left img {
-    height: 40px;
-}
+.nav-left img { height: 40px; }
 
 .nav-title {
     font-size: 20px;
     font-weight: bold;
 }
 
-.nav-right img {
-    height: 35px;
-}
+.nav-right img { height: 35px; }
 
 /* MAIN */
 .main {
@@ -80,9 +74,7 @@ html, body {
     justify-content: space-between;
 }
 
-.link:hover {
-    background: #f0f4ff;
-}
+.link:hover { background: #f0f4ff; }
 
 /* ADVISOR */
 .advisor {
@@ -138,18 +130,18 @@ html, body {
         <h2>STUDENT RECORDS</h2>
         <div class="link">View My Student Profile <span>›</span></div>
         <div class="link">View & Update My Information <span>›</span></div>
-        <div class="link">View My Grades <span>›</span></div>
-        <div class="link">View Transcript <span>›</span></div>
+        <div class="link" onclick="go('grades.html')">View My Grades <span>›</span></div>
+        <div class="link" onclick="go('transcript.html')">View Transcript <span>›</span></div>
         <div class="link">Track Transcript Request <span>›</span></div>
     </div>
 
     <!-- REGISTRATION -->
     <div class="card">
         <h2>REGISTRATION</h2>
-        <div class="link">Plan & Register for Classes <span>›</span></div>
-        <div class="link">View My Class Schedule <span>›</span></div>
-        <div class="link">Change / Drop Classes <span>›</span></div>
-        <div class="link">Search Classes <span>›</span></div>
+        <div class="link" onclick="go('classregistration.html')">Plan & Register for Classes <span>›</span></div>
+        <div class="link" onclick="go('schedule.html')">View My Class Schedule <span>›</span></div>
+        <div class="link" onclick="go('classregistration.html')">Change / Drop Classes <span>›</span></div>
+        <div class="link" onclick="go('search.html')">Search Classes <span>›</span></div>
         <div class="link">Course Materials / Bookstore <span>›</span></div>
     </div>
 
@@ -168,7 +160,9 @@ html, body {
 <div class="advisor">
     <h3>Need Help?</h3>
     <p>Schedule a meeting with an Academic Advisor</p>
-    <a href="#">Schedule Advisor Meeting</a>
+    <a href="https://www.fgcu.edu/academics/advising/" target="_blank">
+        Schedule Advisor Meeting
+    </a>
 </div>
 
 <!-- FOOTER -->
@@ -176,6 +170,12 @@ html, body {
     Support: (555) 123-4567 | support@university.edu <br>
     © 2026 University Registration System | FGCU
 </div>
+
+<script>
+function go(page){
+    window.location.href = page;
+}
+</script>
 
 </body>
 </html>

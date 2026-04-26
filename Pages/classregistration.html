@@ -22,12 +22,16 @@ body {
     padding: 10px 20px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
-.nav img { height: 35px; }
+.nav img { height: 35px; cursor: pointer; }
+.nav img:hover { opacity: 0.8; }
 
 .term-bar {
-    background: white;
-    padding: 10px 20px;
+    background: linear-gradient(135deg, #205081 0%, #2d6fa3 100%);
+    padding: 15px 20px;
+    color: white;
+    font-weight: bold;
 }
 
 /* MAIN */
@@ -39,7 +43,7 @@ body {
 
 /* LEFT */
 .left {
-    background: white;
+    background: #f8fafb;
     padding: 20px;
     border-right: 1px solid #ddd;
     overflow-y: auto;
@@ -48,18 +52,26 @@ body {
 /* TABS */
 .tabs {
     display: flex;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    gap: 5px;
 }
 .tab {
     flex: 1;
-    padding: 10px;
+    padding: 12px;
     text-align: center;
     cursor: pointer;
-    background: #ddd;
+    background: linear-gradient(135deg, #e8eef5 0%, #d4dce6 100%);
+    border-radius: 5px 5px 0 0;
+    transition: all 0.3s;
+    font-weight: 500;
+}
+.tab:hover {
+    background: linear-gradient(135deg, #d8dce8 0%, #c4cce0 100%);
 }
 .tab.active {
-    background: #205081;
+    background: linear-gradient(135deg, #2d6fa3 0%, #205081 100%);
     color: white;
+    box-shadow: 0 -3px 0 rgba(32, 80, 129, 0.3);
 }
 
 /* TABLE */
@@ -79,31 +91,91 @@ th {
 
 /* RIGHT CALENDAR */
 .calendar {
-    padding: 10px;
-    background: #d4f4dd;
+    padding: 15px;
+    background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);
+    border-radius: 8px;
+    margin: 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.calendar b {
+    display: block;
+    margin-bottom: 10px;
+    color: #1b5e20;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.calendar-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    margin-bottom: 5px;
+}
+
+.calendar-day-name {
+    text-align: center;
+    font-weight: bold;
+    padding: 5px 0;
+    color: #1b5e20;
+    font-size: 11px;
 }
 
 .month {
     background: white;
     padding: 8px;
-    border-radius: 10px;
+    border-radius: 6px;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+    flex: 1;
 }
 
 .day {
-    width: 13%;
-    height: 60px;
-    display: inline-block;
-    border: 1px solid #eee;
-    font-size: 10px;
+    width: 100%;
+    height: 100%;
+    min-height: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e0e0e0;
+    font-size: 9px;
+    border-radius: 3px;
+    background: #fafafa;
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 2px;
+    box-sizing: border-box;
+}
+
+.day:hover {
+    background: #e3f2fd;
+    border-color: #1976d2;
+}
+
+.day.other-month {
+    color: #bbb;
+    background: #f5f5f5;
+}
+
+.day b {
+    font-weight: bold;
+    color: #333;
 }
 
 .tag {
-    margin-top: 2px;
-    padding: 2px;
-    border-radius: 4px;
-    font-size: 9px;
+    margin-top: 1px;
+    padding: 1px 2px;
+    border-radius: 2px;
+    font-size: 7px;
     cursor: pointer;
     color: white;
+    font-weight: bold;
 }
 
 /* WEEKLY HEADER */
@@ -141,7 +213,7 @@ th {
 .week-grid {
     flex: 1;
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(7, 1fr);
     position: relative;
 }
 
@@ -161,11 +233,13 @@ th {
     position: absolute;
     left: 3px;
     right: 3px;
+    top: 0;
     border-radius: 5px;
     padding: 3px;
     font-size: 10px;
     color: white;
     cursor: pointer;
+    font-weight: bold;
 }
 
 /* MODAL */
@@ -177,13 +251,230 @@ th {
     display:none;
     justify-content:center;
     align-items:center;
+    z-index: 1000;
 }
 
 .modal-content {
     background:white;
-    padding:20px;
+    padding:0;
     border-radius:10px;
-    width:300px;
+    width:500px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.modal-header {
+    background: #205081;
+    color: white;
+    padding: 20px;
+    border-radius: 10px 10px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.modal-tabs {
+    display: flex;
+    border-bottom: 2px solid #ddd;
+    background: #f5f5f5;
+}
+
+.modal-tab {
+    flex: 1;
+    padding: 12px;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-size: 14px;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s;
+}
+
+.modal-tab.active {
+    background: white;
+    border-bottom: 3px solid #205081;
+    font-weight: bold;
+    color: #205081;
+}
+
+.modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.info-row {
+    display: flex;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.info-label {
+    font-weight: bold;
+    width: 35%;
+    color: #205081;
+}
+
+.info-value {
+    width: 65%;
+    color: #333;
+}
+
+.modal-actions {
+    padding: 15px 20px;
+    border-top: 1px solid #ddd;
+    display: flex;
+    gap: 10px;
+}
+
+.modal-actions button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.register-btn {
+    background: #4caf50;
+    color: white;
+}
+
+.register-btn:hover {
+    background: #45a049;
+}
+
+.close-modal-btn {
+    background: #ddd;
+    color: #333;
+}
+
+.close-modal-btn:hover {
+    background: #bbb;
+}
+
+/* RECOMMENDED SECTION */
+#recommended {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #4caf50;
+}
+
+#recommended h4 {
+    color: #205081;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+#recommended h4:first-child {
+    margin-top: 0;
+}
+
+/* CURRENT SECTION */
+#current {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #2196f3;
+}
+
+/* REGISTER SECTION */
+.register-section {
+    background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    border: 2px solid #ffb74d;
+}
+
+.register-section h4 {
+    margin-top: 0;
+    color: #e65100;
+    font-size: 16px;
+}
+
+.register-section label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.register-section input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 2px solid #ffb74d;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.register-section input:focus {
+    outline: none;
+    border-color: #ff9800;
+    box-shadow: 0 0 5px rgba(255, 152, 0, 0.3);
+}
+
+.register-section button {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.register-section button:hover {
+    background: linear-gradient(135deg, #f57c00 0%, #e65100 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* CURRENT CLASSES TABLE */
+#current table {
+    margin-bottom: 0;
+}
+
+#current table tr:nth-child(even) {
+    background: #f5f5f5;
+}
+
+#current table tr:hover {
+    background: #e3f2fd;
+    transition: background 0.2s;
 }
 </style>
 </head>
@@ -192,12 +483,13 @@ th {
 
 <div class="nav">
     <img src="../Images/logo.png">
-    <img src="../Images/account.png">
+    <img src="../Images/account.png" onclick="window.location.href='homepage.html'" title="Go to Homepage">
 </div>
 
 <div class="term-bar">
-    <b>Select Term:</b>
-    <select><option>Fall 2026</option></select>
+    <b style="color: white;">Select Term:</b>
+    <select style="padding: 5px; border-radius: 3px; border: 1px solid white;"><option>Fall 2026</option></select>
+</div>
 </div>
 
 <div class="main">
@@ -242,13 +534,17 @@ th {
     <!-- CURRENT -->
     <div id="current" style="display:none;">
         <table>
-            <tr><th>Class</th><th>CRN</th></tr>
-            <tr><td>CS101</td><td>12345</td></tr>
-            <tr><td>MATH202</td><td>67890</td></tr>
+            <tr><th>Class</th><th>CRN</th><th>Date</th></tr>
+            <tr><td>CS101</td><td>12345</td><td>MWF 10:30-12:00</td></tr>
+            <tr><td>MATH202</td><td>67890</td><td>TTh 3:00-4:15</td></tr>
         </table>
 
-        <input placeholder="Enter CRN">
-        <button>Submit</button>
+        <div class="register-section">
+            <h4>🎓 Join Another Class</h4>
+            <label for="crn-input">Enter the CRN of the class you want to join:</label>
+            <input id="crn-input" type="text" placeholder="e.g., 22222" maxlength="5">
+            <button onclick="joinClass()">Join Class</button>
+        </div>
     </div>
 </div>
 
@@ -264,13 +560,15 @@ th {
 <div class="weekly">
     <div class="weekly-title">Weekly Schedule</div>
 
-    <div style="display:grid;grid-template-columns:55px repeat(5,1fr);font-size:11px;">
+    <div style="display:grid;grid-template-columns:55px repeat(7,1fr);font-size:11px;">
         <div></div>
+        <div class="day-header">Sun</div>
         <div class="day-header">Mon</div>
         <div class="day-header">Tue</div>
         <div class="day-header">Wed</div>
         <div class="day-header">Thu</div>
         <div class="day-header">Fri</div>
+        <div class="day-header">Sat</div>
     </div>
 
     <div class="schedule-container">
@@ -278,11 +576,13 @@ th {
         <div class="times" id="times"></div>
 
         <div class="week-grid">
+            <div class="day-col" id="sun"></div>
             <div class="day-col" id="mon"></div>
             <div class="day-col" id="tue"></div>
             <div class="day-col" id="wed"></div>
             <div class="day-col" id="thu"></div>
             <div class="day-col" id="fri"></div>
+            <div class="day-col" id="sat"></div>
         </div>
 
     </div>
@@ -302,14 +602,69 @@ function switchTab(tab, el){
     el.classList.add("active");
 }
 
-// month
-const month=document.getElementById("month");
-for(let i=1;i<=30;i++){
-    let d=document.createElement("div");
-    d.className="day";
-    d.innerHTML="<b>"+i+"</b>";
-    month.appendChild(d);
+// Generate accurate calendar for May 2026
+function generateCalendar() {
+    const today = new Date(2026, 4, 26); // May 26, 2026
+    const currentMonth = today.getMonth();
+    const currentYear = today.getFullYear();
+    
+    const monthElement = document.getElementById("month");
+    monthElement.innerHTML = '';
+    
+    // First day of the month
+    const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+    // Last day of the month
+    const lastDate = new Date(currentYear, currentMonth + 1, 0).getDate();
+    
+    // Add calendar day names header
+    const calendarHeader = document.querySelector(".calendar-header");
+    if(!calendarHeader) {
+        const header = document.createElement("div");
+        header.className = "calendar-header";
+        const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        dayNames.forEach(name => {
+            const dayName = document.createElement("div");
+            dayName.className = "calendar-day-name";
+            dayName.innerText = name;
+            header.appendChild(dayName);
+        });
+        monthElement.parentElement.insertBefore(header, monthElement);
+    }
+    
+    // Previous month days
+    const prevMonthLastDate = new Date(currentYear, currentMonth, 0).getDate();
+    for(let i = firstDay - 1; i >= 0; i--) {
+        let d = document.createElement("div");
+        d.className = "day other-month";
+        d.innerHTML = "<b>" + (prevMonthLastDate - i) + "</b>";
+        monthElement.appendChild(d);
+    }
+    
+    // Current month days
+    for(let i = 1; i <= lastDate; i++) {
+        let d = document.createElement("div");
+        d.className = "day";
+        if(i === today.getDate()) {
+            d.style.background = "#fff3e0";
+            d.style.borderColor = "#ff9800";
+            d.style.fontWeight = "bold";
+        }
+        d.innerHTML = "<b>" + i + "</b>";
+        monthElement.appendChild(d);
+    }
+    
+    // Next month days
+    const totalCells = monthElement.children.length;
+    const remainingCells = 42 - totalCells; // 6 rows * 7 days
+    for(let i = 1; i <= remainingCells; i++) {
+        let d = document.createElement("div");
+        d.className = "day other-month";
+        d.innerHTML = "<b>" + i + "</b>";
+        monthElement.appendChild(d);
+    }
 }
+
+generateCalendar();
 
 // times
 const times=document.getElementById("times");
@@ -320,19 +675,84 @@ for(let h=8;h<=20;h++){
     times.appendChild(t);
 }
 
-// classes
+// classes - ENHANCED DATA
 const classes=[
-    {name:"CS101", days:["mon","wed","fri"], start:10.5, end:12, color:"#ff6b6b", desc:"Intro to CS"},
-    {name:"MATH202", days:["tue","thu"], start:15, end:16.25, color:"#4dabf7", desc:"Calculus II"}
+    {
+        name:"CS101",
+        crn:"12345",
+        title:"Intro to Computer Science",
+        days:["mon","wed","fri"],
+        start:10.5,
+        end:12,
+        color:"#ff6b6b",
+        room:"Tech 201",
+        professor:"Dr. Sarah Johnson",
+        credits:3,
+        capacity:30,
+        enrolled:28,
+        prerequisites:"None",
+        description:"An introduction to fundamental computer science concepts including problem-solving, algorithms, and basic programming principles."
+    },
+    {
+        name:"MATH202",
+        crn:"67890",
+        title:"Calculus II",
+        days:["tue","thu"],
+        start:15,
+        end:16.25,
+        color:"#4dabf7",
+        room:"Science 105",
+        professor:"Dr. James Mitchell",
+        credits:4,
+        capacity:35,
+        enrolled:32,
+        prerequisites:"Calculus I",
+        description:"Study of integration techniques, applications of integrals, and infinite series."
+    },
+    {
+        name:"CS201",
+        crn:"22222",
+        title:"Data Structures",
+        days:["mon","wed"],
+        start:13,
+        end:14.25,
+        color:"#a78bfa",
+        room:"Tech 305",
+        professor:"Dr. Emily Chen",
+        credits:3,
+        capacity:25,
+        enrolled:24,
+        prerequisites:"CS101",
+        description:"Explores fundamental data structures including arrays, linked lists, stacks, queues, and trees."
+    },
+    {
+        name:"CYB210",
+        crn:"44444",
+        title:"Intro to Cybersecurity",
+        days:["tue","thu"],
+        start:10,
+        end:11.25,
+        color:"#fbbf24",
+        room:"Tech 102",
+        professor:"Dr. Marcus Rivera",
+        credits:3,
+        capacity:20,
+        enrolled:19,
+        prerequisites:"CS101",
+        description:"Introduction to cybersecurity principles, threat analysis, and security best practices."
+    }
 ];
 
 const HOUR_HEIGHT=50;
 const START=8;
 
-// weekly render
+// weekly render - map class days to all 7 days of week
 classes.forEach(c=>{
     c.days.forEach(d=>{
+        // Map: mon, tue, wed, thu, fri to correct positions
         let col=document.getElementById(d);
+        if(!col) return; // Skip if column doesn't exist
+        
         let block=document.createElement("div");
 
         block.className="class-block";
@@ -348,15 +768,18 @@ classes.forEach(c=>{
     });
 });
 
-// month render
+// month render - Fixed day mapping for 7-day calendar (Sun-Sat)
 let days=document.querySelectorAll(".day");
 classes.forEach(c=>{
     days.forEach((d,i)=>{
-        if(i%7===1 && c.days.includes("tue") ||
-           i%7===2 && c.days.includes("wed") ||
-           i%7===3 && c.days.includes("thu") ||
-           i%7===4 && c.days.includes("fri") ||
-           i%7===0 && c.days.includes("mon")){
+        // Map day indices to correct days: Sun=0, Mon=1, Tue=2, Wed=3, Thu=4, Fri=5, Sat=6
+        if((i%7===0 && c.days.includes("sun")) ||
+           (i%7===1 && c.days.includes("mon")) ||
+           (i%7===2 && c.days.includes("tue")) ||
+           (i%7===3 && c.days.includes("wed")) ||
+           (i%7===4 && c.days.includes("thu")) ||
+           (i%7===5 && c.days.includes("fri")) ||
+           (i%7===6 && c.days.includes("sat"))){
             
             let tag=document.createElement("div");
             tag.className="tag";
@@ -368,20 +791,180 @@ classes.forEach(c=>{
     });
 });
 
-// modal
+
 function openModal(c){
-    document.getElementById("modal").style.display="flex";
-    document.getElementById("modalContent").innerHTML=`
-        <h3>${c.name}</h3>
-        <p><b>Time:</b> ${c.start} - ${c.end}</p>
-        <p>${c.desc}</p>
-        <p>CRN: 12345</p>
-        <button onclick="closeModal()">Close</button>
+    const modal = document.getElementById("modal");
+    const modalContent = document.getElementById("modalContent");
+    
+    const daysStr = c.days.map(d => d.charAt(0).toUpperCase() + d.slice(1)).join(", ");
+    const timeStr = formatTime(c.start) + " - " + formatTime(c.end);
+    
+    modalContent.innerHTML=`
+        <div class="modal-header">
+            <div>
+                <h3>${c.name}</h3>
+                <div style="font-size: 14px; margin-top: 5px; opacity: 0.9;">CRN: ${c.crn}</div>
+            </div>
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        
+        <div class="modal-tabs">
+            <button class="modal-tab active" onclick="switchModalTab(event, 'details')">Details</button>
+            <button class="modal-tab" onclick="switchModalTab(event, 'schedule')">Schedule</button>
+            <button class="modal-tab" onclick="switchModalTab(event, 'instructor')">Instructor</button>
+            <button class="modal-tab" onclick="switchModalTab(event, 'prerequisites')">Prerequisites</button>
+        </div>
+        
+        <div class="modal-body">
+            <div id="details" class="tab-content active">
+                <div class="info-row">
+                    <div class="info-label">Course Title:</div>
+                    <div class="info-value">${c.title}</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Course Code:</div>
+                    <div class="info-value">${c.name}</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">CRN:</div>
+                    <div class="info-value">${c.crn}</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Credits:</div>
+                    <div class="info-value">${c.credits}</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Location:</div>
+                    <div class="info-value">${c.room}</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Description:</div>
+                    <div class="info-value" style="border: none;">${c.description}</div>
+                </div>
+            </div>
+            
+            <div id="schedule" class="tab-content">
+                <div class="info-row">
+                    <div class="info-label">Days:</div>
+                    <div class="info-value">${daysStr}</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Time:</div>
+                    <div class="info-value">${timeStr}</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Room:</div>
+                    <div class="info-value">${c.room}</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Capacity:</div>
+                    <div class="info-value">${c.enrolled}/${c.capacity} enrolled</div>
+                </div>
+                <div class="info-row" style="border: none; padding-top: 15px;">
+                    <div style="width: 100%; background: #e0e0e0; height: 8px; border-radius: 4px; overflow: hidden;">
+                        <div style="background: #4caf50; height: 100%; width: ${(c.enrolled/c.capacity)*100}%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="instructor" class="tab-content">
+                <div class="info-row">
+                    <div class="info-label">Instructor:</div>
+                    <div class="info-value">${c.professor}</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Office Hours:</div>
+                    <div class="info-value">Mon & Wed: 2-4 PM<br>By appointment</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Email:</div>
+                    <div class="info-value">Contact via LMS</div>
+                </div>
+            </div>
+            
+            <div id="prerequisites" class="tab-content">
+                <div class="info-row">
+                    <div class="info-label">Prerequisites:</div>
+                    <div class="info-value">${c.prerequisites === "None" ? "None" : c.prerequisites}</div>
+                </div>
+                <div class="info-row" style="border: none;">
+                    <div class="info-label">Corequisites:</div>
+                    <div class="info-value">None</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal-actions">
+            <button class="close-modal-btn" style="flex: 1;" onclick="closeModal()">Close</button>
+        </div>
     `;
+    
+    modal.style.display="flex";
 }
+
+function switchModalTab(event, tabName){
+    // Remove active class from all tabs and contents
+    document.querySelectorAll(".modal-tab").forEach(tab => tab.classList.remove("active"));
+    document.querySelectorAll(".tab-content").forEach(content => content.classList.remove("active"));
+    
+    // Add active class to clicked tab and corresponding content
+    event.target.classList.add("active");
+    document.getElementById(tabName).classList.add("active");
+}
+
+function formatTime(hours){
+    const h = Math.floor(hours);
+    const m = (hours % 1) * 60;
+    const ampm = h >= 12 ? "PM" : "AM";
+    const displayH = h > 12 ? h - 12 : (h === 0 ? 12 : h);
+    return displayH + (m > 0 ? ":" + Math.floor(m).toString().padStart(2, "0") : ":00") + " " + ampm;
+}
+
+function registerClass(crn, courseName){
+    alert(`Successfully registered for ${courseName} (CRN: ${crn})!`);
+    closeModal();
+}
+
 function closeModal(){
     document.getElementById("modal").style.display="none";
 }
+
+function joinClass(){
+    const crnInput = document.getElementById("crn-input");
+    const crn = crnInput.value.trim();
+    
+    if(!crn){
+        alert("Please enter a valid CRN");
+        return;
+    }
+    
+    // Find the class with matching CRN
+    const foundClass = classes.find(c => c.crn === crn);
+    
+    if(foundClass){
+        alert(`Successfully joined ${foundClass.name} (${foundClass.title})!`);
+        crnInput.value = "";
+    } else {
+        alert("CRN not found. Please check and try again.");
+    }
+}
+
+// Allow Enter key to submit
+document.addEventListener("DOMContentLoaded", function(){
+    const crnInput = document.getElementById("crn-input");
+    if(crnInput){
+        crnInput.addEventListener("keypress", function(e){
+            if(e.key === "Enter"){
+                joinClass();
+            }
+        });
+    }
+});
+
+// Close modal when clicking outside
+document.getElementById("modal").addEventListener("click", function(e){
+    if(e.target === this) closeModal();
+});
 </script>
 
 </body>

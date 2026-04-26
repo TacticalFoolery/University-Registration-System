@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My Waitlist</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #f4f6f9;
+}
+
+/* NAV */
+.nav {
+    background: #205081;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+}
+.nav img { height: 35px; cursor: pointer; }
+
+/* HEADER */
+.header {
+    background: linear-gradient(135deg,#205081,#2d6fa3);
+    color: white;
+    padding: 15px 20px;
+    font-size: 18px;
+}
+
+/* CONTENT */
+.container {
+    padding: 20px;
+}
+
+.waitlist-card {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    border-left: 5px solid #ff9800;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.waitlist-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.status {
+    font-size: 12px;
+    color: #ff9800;
+    font-weight: bold;
+}
+
+/* MODAL (same as your schedule page) */
+.modal {
+    position: fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background: rgba(0,0,0,0.6);
+    display:none;
+    justify-content:center;
+    align-items:center;
+}
+
+.modal-content {
+    background:white;
+    width:520px;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.modal-header {
+    background:#205081;
+    color:white;
+    padding:20px;
+    display:flex;
+    justify-content:space-between;
+}
+
+.close-btn {
+    background:none;
+    border:none;
+    color:white;
+    font-size:24px;
+    cursor:pointer;
+}
+
+.modal-tabs {
+    display:flex;
+    border-bottom:2px solid #ddd;
+}
+
+.modal-tab {
+    flex:1;
+    padding:12px;
+    cursor:pointer;
+}
+
+.modal-tab.active {
+    border-bottom:3px solid #205081;
+    font-weight:bold;
+}
+
+.modal-body {
+    padding:20px;
+}
+
+.tab-content { display:none; }
+.tab-content.active { display:block; }
+
+.info-row {
+    display:flex;
+    justify-content:space-between;
+    padding:10px 0;
+    border-bottom:1px solid #eee;
+}
+
+.info-label {
+    font-weight:bold;
+    color:#205081;
+    width:40%;
+}
+
+.info-value {
+    width:60%;
+}
+</style>
+</head>
+
+<body>
+
+<div class="nav">
+    <img src="../Images/logo.png">
+    <img src="../Images/account.png" onclick="window.location.href='homepage.html'">
+</div>
+
+<div class="header">My Waitlisted Classes</div>
+
+<div class="container" id="waitlist"></div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+<div class="modal-content" id="modalContent"></div>
+</div>
+
+<script>
+
+/* WAITLIST DATA */
+const waitlistedClasses = [
+{
+name:"CS301",
+title:"Algorithms",
+crn:"33333",
+days:["mon","wed"],
+time:"2:30 PM - 3:45 PM",
+room:"Tech 210",
+professor:"Dr. Lee",
+credits:3,
+description:"Advanced algorithm design and analysis.",
+capacity:30,
+enrolled:30,
+prerequisites:"CS201"
+},
+{
+name:"CYB210",
+title:"Intro to Cybersecurity",
+crn:"44444",
+days:["tue","thu"],
+time:"10:00 AM - 11:15 AM",
+room:"Tech 102",
+professor:"Dr. Rivera",
+credits:3,
+description:"Cybersecurity fundamentals.",
+capacity:20,
+enrolled:20,
+prerequisites:"CS101"
+}
+];
+
+/* RENDER */
+const container = document.getElementById("waitlist");
+
+waitlistedClasses.forEach(c=>{
+let card=document.createElement("div");
+card.className="waitlist-card";
+
+card.innerHTML=`
+<b>${c.name}</b><br>
+${c.title}<br>
+${c.time}<br>
+<span class="status">WAITLISTED</span>
+`;
+
+card.onclick=()=>openModal(c);
+
+container.appendChild(card);
+});
+
+/* MODAL (same as your system) */
+function openModal(c){
+document.getElementById("modal").style.display="flex";
+
+document.getElementById("modalContent").innerHTML=`
+<div class="modal-header">
+<div>
+<h3>${c.name}</h3>
+<div>CRN: ${c.crn}</div>
+</div>
+<button class="close-btn" onclick="closeModal()">×</button>
+</div>
+
+<div class="modal-tabs">
+<button class="modal-tab active" onclick="switchTab(event,'details')">Details</button>
+<button class="modal-tab" onclick="switchTab(event,'schedule')">Schedule</button>
+<button class="modal-tab" onclick="switchTab(event,'instructor')">Instructor</button>
+<button class="modal-tab" onclick="switchTab(event,'prerequisites')">Prerequisites</button>
+</div>
+
+<div class="modal-body">
+
+<div id="details" class="tab-content active">
+<div class="info-row"><div class="info-label">Course Title:</div><div class="info-value">${c.title}</div></div>
+<div class="info-row"><div class="info-label">CRN:</div><div class="info-value">${c.crn}</div></div>
+<div class="info-row"><div class="info-label">Credits:</div><div class="info-value">${c.credits}</div></div>
+</div>
+
+<div id="schedule" class="tab-content">
+<div class="info-row"><div class="info-label">Days:</div><div class="info-value">${c.days.join(", ")}</div></div>
+<div class="info-row"><div class="info-label">Time:</div><div class="info-value">${c.time}</div></div>
+<div class="info-row"><div class="info-label">Room:</div><div class="info-value">${c.room}</div></div>
+</div>
+
+<div id="instructor" class="tab-content">
+<div class="info-row"><div class="info-label">Instructor:</div><div class="info-value">${c.professor}</div></div>
+</div>
+
+<div id="prerequisites" class="tab-content">
+<div class="info-row"><div class="info-label">Prerequisites:</div><div class="info-value">${c.prerequisites}</div></div>
+</div>
+
+</div>
+`;
+}
+
+function switchTab(e,id){
+document.querySelectorAll(".modal-tab").forEach(t=>t.classList.remove("active"));
+document.querySelectorAll(".tab-content").forEach(t=>t.classList.remove("active"));
+e.target.classList.add("active");
+document.getElementById(id).classList.add("active");
+}
+
+function closeModal(){
+document.getElementById("modal").style.display="none";
+}
+
+</script>
+
+</body>
+</html>

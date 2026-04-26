@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Graduation Requirements - Class Search</title>
+<style>
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* TOP NAVIGATION */
+.nav {
+    background: #205081;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.nav img { 
+    height: 35px; 
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.nav img:hover { 
+    opacity: 0.8;
+    transform: scale(1.05);
+}
+
+/* HEADER BAR */
+.header-bar {
+    background: linear-gradient(135deg, #2d6fa3 0%, #205081 100%);
+    padding: 20px;
+    color: white;
+}
+
+.header-bar h1 {
+    margin: 0 0 10px 0;
+    font-size: 28px;
+}
+
+.header-bar p {
+    margin: 0;
+    opacity: 0.9;
+    font-size: 14px;
+}
+
+/* MAIN CONTAINER */
+.main {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* SEARCH SECTION */
+.search-section {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.search-section h3 {
+    margin-top: 0;
+    color: #205081;
+    font-size: 18px;
+}
+
+.search-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.search-input {
+    flex: 1;
+    min-width: 250px;
+    padding: 12px 15px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #205081;
+    box-shadow: 0 0 8px rgba(32, 80, 129, 0.2);
+}
+
+.filter-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.filter-button {
+    padding: 10px 16px;
+    border: 2px solid #ddd;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.3s;
+    font-weight: 500;
+}
+
+.filter-button:hover {
+    border-color: #205081;
+    color: #205081;
+}
+
+.filter-button.active {
+    background: #205081;
+    color: white;
+    border-color: #205081;
+}
+
+/* RESULTS SECTION */
+.results-section {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.results-header h3 {
+    margin: 0;
+    color: #205081;
+    font-size: 18px;
+}
+
+.result-count {
+    color: #666;
+    font-size: 13px;
+    background: #f5f5f5;
+    padding: 5px 12px;
+    border-radius: 20px;
+}
+
+/* TABLE STYLES */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+th {
+    background: #f8fafb;
+    color: #205081;
+    font-weight: 600;
+    border-bottom: 2px solid #205081;
+}
+
+tr:hover {
+    background: #f5f9ff;
+    cursor: pointer;
+}
+
+tr:hover td {
+    transition: all 0.2s;
+}
+
+/* STATUS BADGES */
+.status-open {
+    background: #c8e6c9;
+    color: #1b5e20;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 12px;
+    text-align: center;
+    display: inline-block;
+}
+
+.status-full {
+    background: #ffcdd2;
+    color: #c62828;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 12px;
+    text-align: center;
+    display: inline-block;
+}
+
+.status-waitlist {
+    background: #fff9c4;
+    color: #f57f17;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 12px;
+    text-align: center;
+    display: inline-block;
+}
+
+/* CATEGORY TAGS */
+.category-tag {
+    display: inline-block;
+    background: #e3f2fd;
+    color: #1976d2;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    margin-right: 5px;
+}
+
+/* NO RESULTS */
+.no-results {
+    text-align: center;
+    padding: 40px 20px;
+    color: #999;
+}
+
+.no-results-icon {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+/* MODAL */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 0;
+    border-radius: 10px;
+    width: 500px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    background: #205081;
+    color: white;
+    padding: 20px;
+    border-radius: 10px 10px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.info-row {
+    display: flex;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.info-label {
+    font-weight: bold;
+    width: 35%;
+    color: #205081;
+}
+
+.info-value {
+    width: 65%;
+    color: #333;
+}
+
+.modal-actions {
+    padding: 15px 20px;
+    border-top: 1px solid #ddd;
+    display: flex;
+    gap: 10px;
+}
+
+.modal-actions button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+    font-weight: bold;
+}
+
+.add-btn {
+    background: #4caf50;
+    color: white;
+}
+
+.add-btn:hover {
+    background: #45a049;
+}
+
+.close-modal-btn {
+    background: #ddd;
+    color: #333;
+}
+
+.close-modal-btn:hover {
+    background: #bbb;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVIGATION -->
+<div class="nav">
+    <img src="../Images/logo.png">
+    <img src="../Images/account.png" onclick="window.location.href='homepage.html'" title="Go to Homepage">
+</div>
+
+<!-- HEADER -->
+<div class="header-bar">
+    <h1>B.S. Computer Science</h1>
+    <p>Search classes and track graduation requirements</p>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+    
+    <!-- SEARCH SECTION -->
+    <div class="search-section">
+        <h3>🔍 Find Classes</h3>
+        
+        <div class="search-container">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search by course name, code, or CRN...">
+        </div>
+        
+        <div class="filter-group">
+            <button class="filter-button active" onclick="filterByTab('all')">All Classes</button>
+            <button class="filter-button" onclick="filterByTab('open')">Open Only</button>
+            <button class="filter-button" onclick="filterByTab('waitlist')">Waitlist Available</button>
+            <button class="filter-button" onclick="filterByTab('required')">Required for Graduation</button>
+        </div>
+    </div>
+
+    <!-- RESULTS SECTION -->
+    <div class="results-section">
+        <div class="results-header">
+            <h3>Available Classes</h3>
+            <span class="result-count" id="resultCount">Loading...</span>
+        </div>
+        
+        <div id="tableContainer">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Course Code</th>
+                        <th>Course Name</th>
+                        <th>CRN</th>
+                        <th>Status</th>
+                        <th>Enrollment</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody id="classesTable">
+                </tbody>
+            </table>
+            <div id="noResults" class="no-results" style="display:none;">
+                <div class="no-results-icon">📚</div>
+                <p>No classes found matching your search</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+    <div class="modal-content" id="modalContent"></div>
+</div>
+
+<script>
+const major = "B.S. Computer Science";
+
+// Classes data - sorted by availability
+const allClasses = [
+    {
+        code: "CS101",
+        name: "Intro to Computer Science",
+        crn: "12345",
+        status: "open",
+        enrolled: 28,
+        capacity: 30,
+        credits: 3,
+        category: "Core",
+        required: true,
+        professor: "Dr. Sarah Johnson",
+        time: "MWF 10:30-12:00",
+        room: "Tech 201",
+        description: "An introduction to fundamental computer science concepts including problem-solving, algorithms, and basic programming principles."
+    },
+    {
+        code: "MATH202",
+        name: "Calculus II",
+        crn: "67890",
+        status: "open",
+        enrolled: 32,
+        capacity: 35,
+        credits: 4,
+        category: "Core",
+        required: true,
+        professor: "Dr. James Mitchell",
+        time: "TTh 3:00-4:15",
+        room: "Science 105",
+        description: "Study of integration techniques, applications of integrals, and infinite series."
+    },
+    {
+        code: "CS201",
+        name: "Data Structures",
+        crn: "22222",
+        status: "open",
+        enrolled: 24,
+        capacity: 25,
+        credits: 3,
+        category: "Required",
+        required: true,
+        professor: "Dr. Emily Chen",
+        time: "MWF 1:00-2:15",
+        room: "Tech 305",
+        description: "Explores fundamental data structures including arrays, linked lists, stacks, queues, and trees."
+    },
+    {
+        code: "CYB210",
+        name: "Intro to Cybersecurity",
+        crn: "44444",
+        status: "open",
+        enrolled: 19,
+        capacity: 20,
+        credits: 3,
+        category: "Elective",
+        required: false,
+        professor: "Dr. Marcus Rivera",
+        time: "TTh 10:00-11:15",
+        room: "Tech 102",
+        description: "Introduction to cybersecurity principles, threat analysis, and security best practices."
+    },
+    {
+        code: "PHYS301",
+        name: "Modern Physics",
+        crn: "55555",
+        status: "waitlist",
+        enrolled: 30,
+        capacity: 30,
+        credits: 4,
+        category: "Core",
+        required: true,
+        professor: "Dr. Robert Klein",
+        time: "MWF 2:00-3:30",
+        room: "Science 210",
+        description: "Quantum mechanics, relativity, and atomic physics fundamentals."
+    },
+    {
+        code: "CHEM101",
+        name: "General Chemistry I",
+        crn: "66666",
+        status: "full",
+        enrolled: 35,
+        capacity: 35,
+        credits: 4,
+        category: "Required",
+        required: true,
+        professor: "Dr. Lisa Wong",
+        time: "TTh 9:00-10:30",
+        room: "Science 150",
+        description: "Introduction to chemistry including atomic structure, bonding, and reactions."
+    },
+    {
+        code: "ENG101",
+        name: "English Composition",
+        crn: "77777",
+        status: "open",
+        enrolled: 22,
+        capacity: 25,
+        credits: 3,
+        category: "Gen Ed",
+        required: true,
+        professor: "Dr. Michael Adams",
+        time: "MWF 11:00-12:00",
+        room: "Arts 105",
+        description: "Fundamentals of academic writing and composition."
+    },
+    {
+        code: "HIST201",
+        name: "World History II",
+        crn: "88888",
+        status: "waitlist",
+        enrolled: 25,
+        capacity: 25,
+        credits: 3,
+        category: "Gen Ed",
+        required: false,
+        professor: "Dr. Patricia Martinez",
+        time: "TTh 1:00-2:30",
+        room: "Arts 301",
+        description: "History from 1500 to present day across all continents."
+    }
+];
+
+let filteredClasses = [...allClasses];
+let currentTab = 'all';
+
+// Initialize
+function init() {
+    displayClasses();
+    document.getElementById('searchInput').addEventListener('input', handleSearch);
+}
+
+// Display classes
+function displayClasses() {
+    const tbody = document.getElementById('classesTable');
+    const noResults = document.getElementById('noResults');
+    const resultCount = document.getElementById('resultCount');
+    
+    tbody.innerHTML = '';
+    
+    if(filteredClasses.length === 0) {
+        noResults.style.display = 'block';
+        resultCount.textContent = '0 classes';
+        return;
+    }
+    
+    noResults.style.display = 'none';
+    resultCount.textContent = filteredClasses.length + ' class' + (filteredClasses.length !== 1 ? 'es' : '');
+    
+    filteredClasses.forEach((cls, index) => {
+        const row = document.createElement('tr');
+        row.style.cursor = 'pointer';
+        row.onclick = () => openModal(cls);
+        
+        let statusBadge = `<span class="status-open">${cls.status.toUpperCase()}</span>`;
+        if(cls.status === 'full') {
+            statusBadge = `<span class="status-full">FULL</span>`;
+        } else if(cls.status === 'waitlist') {
+            statusBadge = `<span class="status-waitlist">WAITLIST</span>`;
+        }
+        
+        row.innerHTML = `
+            <td><strong>${cls.code}</strong></td>
+            <td>${cls.name}</td>
+            <td>${cls.crn}</td>
+            <td>${statusBadge}</td>
+            <td>${cls.enrolled}/${cls.capacity}</td>
+            <td><span class="category-tag">${cls.category}</span></td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+// Handle search
+function handleSearch(e) {
+    const searchTerm = e.target.value.toLowerCase();
+    
+    let baseClasses = allClasses;
+    if(currentTab === 'required') {
+        baseClasses = allClasses.filter(c => c.required);
+    } else if(currentTab === 'open') {
+        baseClasses = allClasses.filter(c => c.status === 'open');
+    } else if(currentTab === 'waitlist') {
+        baseClasses = allClasses.filter(c => c.status === 'open' || c.status === 'waitlist');
+    }
+    
+    filteredClasses = baseClasses.filter(cls => {
+        return cls.code.toLowerCase().includes(searchTerm) ||
+               cls.name.toLowerCase().includes(searchTerm) ||
+               cls.crn.includes(searchTerm);
+    });
+    
+    displayClasses();
+}
+
+// Filter by tab
+function filterByTab(tab) {
+    currentTab = tab;
+    
+    // Update active button
+    document.querySelectorAll('.filter-button').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    // Filter classes
+    if(tab === 'all') {
+        filteredClasses = [...allClasses];
+    } else if(tab === 'open') {
+        filteredClasses = allClasses.filter(c => c.status === 'open');
+    } else if(tab === 'waitlist') {
+        filteredClasses = allClasses.filter(c => c.status === 'open' || c.status === 'waitlist');
+    } else if(tab === 'required') {
+        filteredClasses = allClasses.filter(c => c.required);
+    }
+    
+    // Reapply search
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    if(searchTerm) {
+        filteredClasses = filteredClasses.filter(cls => 
+            cls.code.toLowerCase().includes(searchTerm) ||
+            cls.name.toLowerCase().includes(searchTerm) ||
+            cls.crn.includes(searchTerm)
+        );
+    }
+    
+    displayClasses();
+}
+
+// Modal
+function openModal(cls) {
+    const enrollment = ((cls.enrolled / cls.capacity) * 100).toFixed(0);
+    const requiredText = cls.required ? '✓ Required for Graduation' : 'Optional Elective';
+    
+    document.getElementById('modal').style.display = 'flex';
+    document.getElementById('modalContent').innerHTML = `
+        <div class="modal-header">
+            <div>
+                <h3>${cls.code}</h3>
+                <div style="font-size: 14px; margin-top: 5px; opacity: 0.9;">CRN: ${cls.crn}</div>
+            </div>
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+            <div class="info-row">
+                <div class="info-label">Status:</div>
+                <div class="info-value" style="border: none;">${cls.required ? '<span style="color: #1b5e20; font-weight: bold;">✓ Required for Graduation</span>' : '<span style="color: #f57c00; font-weight: bold;">Optional Elective</span>'}</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Course Title:</div>
+                <div class="info-value">${cls.name}</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Credits:</div>
+                <div class="info-value">${cls.credits}</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Category:</div>
+                <div class="info-value"><span class="category-tag">${cls.category}</span></div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Instructor:</div>
+                <div class="info-value">${cls.professor}</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Time:</div>
+                <div class="info-value">${cls.time}</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Room:</div>
+                <div class="info-value">${cls.room}</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Enrollment:</div>
+                <div class="info-value" style="border: none;">${cls.enrolled}/${cls.capacity}</div>
+            </div>
+            <div style="background: #e0e0e0; height: 8px; border-radius: 4px; overflow: hidden; margin: 10px 0;">
+                <div style="background: ${enrollment > 90 ? '#ff6b6b' : enrollment > 70 ? '#fbbf24' : '#4caf50'}; height: 100%; width: ${enrollment}%"></div>
+            </div>
+            <p style="margin: 15px 0 0 0; color: #666; font-size: 13px;">${cls.description}</p>
+        </div>
+        
+        <div class="modal-actions">
+            <button class="add-btn" onclick="addClass('${cls.code}', '${cls.name}')">Add to Schedule</button>
+            <button class="close-modal-btn" onclick="closeModal()">Close</button>
+        </div>
+    `;
+}
+
+function addClass(code, name) {
+    alert(`Added ${code}: ${name} to your schedule!`);
+    closeModal();
+}
+
+function closeModal() {
+    document.getElementById('modal').style.display = 'none';
+}
+
+// Close modal when clicking outside
+document.getElementById('modal').addEventListener('click', function(e) {
+    if(e.target === this) closeModal();
+});
+
+// Initialize on load
+init();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Advisor Override</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #f4f6f9;
+}
+
+/* NAV */
+.nav {
+    background: #7b1fa2; /* different color = admin feel */
+    padding: 10px 20px;
+    color: white;
+    font-weight: bold;
+}
+
+/* CONTAINER */
+.container {
+    max-width: 700px;
+    margin: 40px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* FORM */
+h2 {
+    margin-top: 0;
+    color: #7b1fa2;
+}
+
+.label {
+    font-weight: bold;
+    margin-top: 15px;
+    display: block;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+textarea {
+    resize: vertical;
+}
+
+/* BUTTONS */
+.buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.approve {
+    background: #4caf50;
+    color: white;
+}
+
+.deny {
+    background: #f44336;
+    color: white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="nav">Advisor Override Panel</div>
+
+<div class="container">
+
+<h2>Override Request</h2>
+
+<label class="label">Student Name</label>
+<input type="text" value="John Doe">
+
+<label class="label">Student ID</label>
+<input type="text" value="12345678">
+
+<label class="label">Course</label>
+<select>
+    <option>CS301 - Algorithms</option>
+    <option>CYB210 - Cybersecurity</option>
+</select>
+
+<label class="label">Override Type</label>
+<select>
+    <option>Prerequisite Override</option>
+    <option>Capacity Override</option>
+    <option>Time Conflict Override</option>
+</select>
+
+<label class="label">Reason</label>
+<textarea rows="4" placeholder="Enter justification..."></textarea>
+
+<div class="buttons">
+    <button class="approve" onclick="approve()">Approve</button>
+    <button class="deny" onclick="deny()">Deny</button>
+</div>
+
+</div>
+
+<script>
+function approve(){
+    alert("Override Approved");
+}
+
+function deny(){
+    alert("Override Denied");
+}
+</script>
+
+</body>
+</html>
